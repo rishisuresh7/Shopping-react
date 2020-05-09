@@ -26,5 +26,5 @@ export const isFetchingData =  createSelector(
 
 export const isFetchingCollectionData =  createSelector(
     [selectCollection],
-    collection => !!collection
+    collection => collection ? false : true
 )
