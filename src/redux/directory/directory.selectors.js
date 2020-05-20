@@ -6,3 +6,13 @@ export const selectDirectoryItems = createSelector(
     [selectDirectory],
     directory => directory.sections
 )
+
+export const isLoading = createSelector(
+    [selectDirectory],
+    directory => directory.isFetching
+);
+
+export const isError = createSelector(
+    [selectDirectory],
+    directory => directory.isError
+);

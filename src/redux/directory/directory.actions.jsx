@@ -1,6 +1,19 @@
-export const initDirectory = (sections) => {
+export const fetchSectionsStart = () => {
     return {
-        type: 'INIT_DIRECTORY',
-        payload: sections
+        type: 'FETCH_SECTIONS_START'
+    }
+}
+
+export const fetchSectionsSuccess = (data) => {
+    return {
+        type: 'FETCH_SECTIONS_SUCCESS',
+        payload: data
+    }
+}
+
+export const fetchSectionsFailure = (error) => {
+    return {
+        type: 'FETCH_SECTIONS_FAILURE',
+        payload: error
     }
 }

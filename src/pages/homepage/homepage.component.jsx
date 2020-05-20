@@ -1,42 +1,39 @@
 import React from 'react'
+import {createStructuredSelector} from 'reselect';
 import './homepage.styles.scss'
 import {connect} from 'react-redux';
 import Directory from '../../components/directory/directory.component'
-import {initDirectory} from '../../redux/directory/directory.actions';
+import {fetchSectionsStart} from '../../redux/directory/directory.actions';
+import {isLoading, isError} from '../../redux/directory/directory.selectors';
 import Spinner from '../../components/spinner/spinner.component';
-import {convertWithRouteName} from '../../firebase/firebase.util';
 const WithSpinner = Spinner(Directory);
 
 class HomePage extends React.Component {
-  state = {
-    isLoading: true
-  }
-
   componentDidMount() {
-    const {upDateSections} = this.props;
-    fetch("http://localhost:4000/shoppingCategories/getcollection")
-      .then(response => response.json())
-      .then(response => {
-        upDateSections(convertWithRouteName(response.result.sections));
-        this.setState({
-        isLoading: false
-        });
-    });
+    this.props.fetchSectionsStart();
   }
 
   render() {
-    const {isLoading} = this.state;
+    const {isLoading, isError} = this.props;
     return (
       <div className="homepage">
-        <WithSpinner isLoading = {isLoading}/>
+        {
+          isError?
+        <div className= "error" >Oops something went wrong</div>
+        :<WithSpinner isLoading = { isLoading}/>
+        }
       </div>
     )
   }
 }
 
+const mapStateToProps = createStructuredSelector({
+  isLoading: isLoading,
+  isError: isError,
+});
 
 const mapDispatchToProps = dispatch => ({
-  upDateSections: sections => dispatch(initDirectory(sections))
+  fetchSectionsStart: () => dispatch(fetchSectionsStart())
 })
 
-export default connect(null, mapDispatchToProps)(HomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
